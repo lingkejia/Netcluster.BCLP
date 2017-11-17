@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body class="aui-bg-white">
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">急速贷款</div>
+			<a class="aui-pull-right aui-btn">
+				<span class="aui-iconfont aui-icon-share"></span>
+			</a>
+		</header>
+		<div class="aui-content" id="content">
+			<img src="../img/credit-banner.jpg" />
+			<img src="../img/credit-nav.jpg" />
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							贷款类型
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-pull-right">
+								<select v-model="form.loan_type">
+									<option value="个人" selected="">个人</option>
+									<option value="企业">企业</option>
+								</select>
+							</div>
+
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							姓名
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-pull-right">
+								<input type="text" class="aui-text-right" placeholder="真实姓名" v-model="form.loan_name">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							手机号码
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-pull-right">
+								<input type="text" class="aui-text-right" placeholder="11位手机号码" v-model="form.loan_phone">
+							</div>
+						</div>
+						<div class="aui-pull-right">
+							<div class="aui-btn aui-disabled" @click="send">{{codeText}}</div>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							验证码
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-pull-right">
+								<input type="text" class="aui-text-right" placeholder="手机验证码" v-model="form.code">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							贷款金额
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" class="aui-text-right" placeholder="想要贷款的金额" v-model="form.loan_money">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							贷款期限
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" class="aui-text-right" placeholder="想要还贷的期限，单位：月" v-model="form.loan_limit">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+						<div class="aui-btn aui-btn-primary aui-btn-block" @click="save">立即申请</div>
+					</div>
+				</li>
+			</ul>
+			<img src="../img/credit-ad.jpg" />
+			<p style="line-height: 60px;" class="aui-font-size-12 aui-text-center">由温商小额贷款提供服务</p>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var seed = 60; //60秒  
+			var t1 = null;
+			var app = new Vue({
+				el: "#content",
+				data: {
+					codeText: "获取验证码",
+					form: {
+						loan_type: "个人",
+						loan_name: "",
+						loan_phone: "",
+						loan_money: "",
+						loan_limit: "",
+						loan_code: "",
+						code: ""
+					}
+				},
+				methods: {
+					save: function() {
+						showWaiting();
+						mui.getJSON(domain + "API/Loan/AddLoan", app.form, function(ret) {
+							closeWaiting();
+							if(ret.code == 200) {
+								alert("申请成功，系统正在审核您的申请！");
+							} else {
+								plus.nativeUI.toast(ret.reason);
+							}
+						})
+					},
+					send: function() {
+						if(this.form.loan_phone == "") {
+							alert("未填写手机号码");
+							return;
+						}
+						if(seed != 60) {
+							return;
+						}
+						t1 = setInterval(tip, 1000);
+						mui.get(domain + "API/Sms/Send", {
+							phone: this.form.loan_phone
+						}, function(data) {
+							if(data == "success") {
+								plus.nativeUI.toast("验证码发送成功，请注意接收！");
+							} else {
+								plus.nativeUI.toast("验证码发送失败！" + data);
+							}
+						})
+					}
+				}
+			});
+
+			function enableBtn() {
+				app.codeText = "获取验证码";
+			}
+
+			function tip() {
+				seed--;
+				if(seed < 1) {
+					enableBtn();
+					seed = 60;
+					var t2 = clearInterval(t1);
+				} else {
+					app.codeText = seed + "秒后重试";
+				}
+			}
+		</script>
+	</body>
+
+</html>

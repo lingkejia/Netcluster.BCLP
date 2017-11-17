@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+	</head>
+
+	<body>
+		<footer class="aui-bar aui-bar-tab" id="footer">
+			<div class="aui-bar-tab-item aui-active" href="nav-1.html" id="defaultTab" tapmode>
+				<i class="aui-iconfont aui-icon-home"></i>
+				<div class="aui-bar-tab-label">车生活</div>
+			</div>
+			<div class="aui-bar-tab-item" href="nav-2.html" tapmode>
+				<i class="aui-iconfont aui-icon-search"></i>
+				<div class="aui-bar-tab-label">查违章</div>
+			</div>
+			<div class="aui-bar-tab-item" href="nav-3.html" tapmode>
+				<i class="aui-iconfont aui-icon-star"></i>
+				<div class="aui-bar-tab-label">车管家</div>
+			</div>
+			<div class="aui-bar-tab-item" href="nav-4.html" tapmode>
+				<div class="aui-dot"></div>
+				<i class="aui-iconfont aui-icon-my"></i>
+				<div class="aui-bar-tab-label">我的</div>
+			</div>
+		</footer>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/aui-tab.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var subpages = ['nav-1.html', 'nav-2.html', 'nav-3.html', 'nav-4.html'];
+			var subpage_style = {
+				top: '0px',
+				bottom: '51px'
+			};
+			var aniShow = {};
+			var title = ["百帮宝车生活", "违章查询", "汽车管家", "个人中心"];
+			//创建子页面，首个选项卡页面显示，其它均隐藏；
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+
+				for(var i = 0; i < 4; i++) {
+					var temp = {};
+					if(i == 0) {
+						subpage_style.titleNView = {
+							backgroundColor: '#2ba2ff',
+							titleColor: '#ffffff',
+							titleText: title[i],
+							type: 'transparent'
+						}
+					}
+					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
+					if(i > 0) {
+						sub.hide();
+					}
+					self.append(sub);
+				}
+			});
+			var lastTabs;
+			var index = 0;
+			var tab = new auiTab({
+				element: document.getElementById("footer"),
+				index: 1,
+				repeatClick: false
+			}, function(ret) {
+				if(index == 0) {
+					lastTabs = subpages[0];
+					plus.webview.hide(lastTabs);
+					index++;
+				}
+				var activeTab = subpages[ret.index - 1];
+
+				plus.webview.getWebviewById(subpages[ret.index - 1]).reload();
+
+				plus.webview.hide(lastTabs);
+
+				plus.webview.show(activeTab, "fade-in", 300);
+
+				//记录上次活跃的选项卡
+				lastTabs = activeTab;
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-pull-refresh.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+
+		<header class="aui-bar aui-bar-nav">
+			<div class="aui-title">违章查询</div>
+		</header>
+		<section class="aui-refresh-content">
+			<img src="img/wzhz.png" width="100%"/>
+			<div id="vio_content">
+				<div v-for="item in result">
+					<section class="aui-grid aui-margin-b-10" @click="show(item.vid,item.money,item.code)">
+						<div class="aui-row">
+							<div class="aui-col-xs-4">
+								<h2 style="background-color: #0894EC;padding: 5px;color: #FFFFFF;border-radius:0 20px 20px 0">{{item.hphm}}</h2>
+							</div>
+							<div class="aui-col-xs-4">
+								<h2 class="aui-text-danger">{{item.money}}</h2>
+								<div class="aui-grid-label">罚款</div>
+							</div>
+							<div class="aui-col-xs-4">
+								<h2 class="aui-text-danger">{{item.code}}</h2>
+								<div class="aui-grid-label">积分</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+			<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-margin-t-10 aui-bg-white">
+				<div class="aui-flex-item-12 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15" id="add">
+					<div class="aui-btn aui-btn-warning aui-btn-block"><i class="aui-iconfont aui-icon-plus"></i> 点击添加车辆进行查询</div>
+				</div>
+			</div>
+			<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-margin-t-10 aui-bg-white" onclick="openwin('/violation/violation-pay.html')">
+				<div class="aui-flex-item-8 aui-flex-row aui-flex-middle aui-padded-15">
+					<h3>违章罚款代缴</h3>
+					<p>交罚款，无需东奔西跑</p>
+				</div>
+				<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15">
+					<img src="img/hot-1.png" />
+				</div>
+			</div>
+
+			<section class="aui-grid aui-margin-t-10" style="background-color: transparent;">
+				<div class="aui-row">
+					<div class="aui-col-xs-4">
+						<img src="img/kuai.png" width="40%" style="margin: 0px auto;" />
+						<p class="aui-grid-label  aui-font-size-12">查询准确</p>
+					</div>
+					<div class="aui-col-xs-4">
+						<img src="img/zhun.png" width="40%" style="margin: 0px auto;" />
+						<p class="aui-grid-label aui-font-size-12">极速查缴</p>
+					</div>
+					<div class="aui-col-xs-4">
+						<img src="img/sheng.png" width="40%" style="margin: 0px auto;" />
+						<p class="aui-grid-label aui-font-size-12">办违章省钱</p>
+					</div>
+				</div>
+			</section>
+
+		</section>
+
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/aui-pull-refresh.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var userinfo = localStorage.getItem("userinfo");
+			var uid;
+			var webview_detail;
+			var pullRefresh;
+			var app = new Vue({
+				el: "#vio_content",
+				data: {
+					result: []
+				},
+				methods: {
+					show: function(vid, money, code) {
+						mui.fire(webview_detail, 'getWfxx', {
+							vid: vid,
+							money: money,
+							code: code
+						});
+						//打开详情页面          
+						showWebview(webview_detail);
+					}
+				}
+			})
+			mui.plusReady(function() {
+				webview_detail = mui.preload({
+					url: 'violation/violation-list.html',
+					id: 'violation-list.html'
+				});
+				pullRefresh = new auiPullToRefresh({
+					container: document.querySelector('.aui-refresh-content'),
+					triggerDistance: 100
+				}, function(ret) {
+					if(ret.status == "success") {
+						getVehcile();
+					}
+				})
+				document.getElementById('add').addEventListener('tap', function() {
+					var wv;
+					if(userinfo == null) {
+						wv = plus.webview.getWebviewById("login.html");
+
+					} else {
+						wv = mui.preload({
+							url: 'carinfo/car-list.html',
+							id: 'car-list.html'
+						});
+					}
+					showWebview(wv);
+				})
+				getVehcile();
+			})
+
+			function getVehcile() {
+				if(userinfo == null) {
+					pullRefresh.cancelLoading();
+					return;
+				}
+				uid = JSON.parse(userinfo).Id;
+				mui.getJSON(domain + "API/Violation/GetViolationCount", {
+					uid: uid
+				}, function(data) {
+					pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+					console.log(JSON.stringify(data));
+					app.result = data.result;
+				})
+			}
+		</script>
+	</body>
+
+</html>

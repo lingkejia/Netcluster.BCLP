@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-slide.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<style type="text/css">
+			.aui-slide-page-wrap {
+				bottom: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="aui-content">
+			<div id="banner-slide">
+				<div class="aui-slide-wrap">
+					<div class="aui-slide-node bg-dark">
+						<img src="img/slide-1.jpg" />
+					</div>
+					<div class="aui-slide-node bg-dark">
+						<img src="img/slide-2.jpg" />
+					</div>
+				</div>
+				<div class="aui-slide-page-wrap">
+					<!--分页容器-->
+				</div>
+			</div>
+			<section class="aui-grid">
+				<div class="aui-row">
+					<div class="aui-col-xs-3" id="wzdj">
+						<img src="img/nav-r-1.png" width="60%" style="margin:0px auto" />
+						<p style="line-height: 32px;">违章代缴</p>
+					</div>
+					<div class="aui-col-xs-3" id="njdb">
+						<img src="img/nav-r-2.png" width="60%" style="margin:0px auto" />
+						<p style="line-height: 32px;">年检代办</p>
+					</div>
+					<div class="aui-col-xs-3" id="qcbx">
+						<img src="img/nav-r-3.png" width="60%" style="margin:0px auto" />
+						<p style="line-height: 32px;">特价车险</p>
+					</div>
+					<div class="aui-col-xs-3" onclick="toDuiba();">
+						<img src="img/nav-r-4.png" width="60%" style="margin:0px auto" />
+						<p style="line-height: 32px;">积分商城</p>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<div class="aui-flex-col aui-flex-center aui-border-tb aui-margin-t-10 aui-bg-white" id="oil">
+			<div class="aui-flex-item-3 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+				<p class="aui-text-purple">今日油价</p>
+			</div>
+			<div class="aui-flex-item-3 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+				<h2 class="aui-text-success"><span id="o1">{{result.o1}}</span>元</h2>
+				<p>92#</p>
+			</div>
+			<div class="aui-flex-item-3 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+				<h2 class="aui-text-warning"><span id="o2">{{result.o2}}</span>元</h2>
+				<p>95#</p>
+			</div>
+			<div class="aui-flex-item-3 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10">
+				<h2 class="aui-text-indigo"><span id="o3">{{result.o3}}</span>元</h2>
+				<p>0#</p>
+			</div>
+		</div>
+
+		<div class="aui-content">
+			<div class="bar">
+				<div class="bar-title">
+					热门推荐
+				</div>
+			</div>
+			<div class="aui-hr"></div>
+			<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-bg-white">
+				<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r" id="ad-wzdj">
+					<h3>违章代缴</h3>
+					<p class="aui-font-size-12 aui-margin-b-5">交罚款，更简单</p>
+					<img src="img/hot-1.png">
+				</div>
+				<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10" id="ad-njdb">
+					<h3>车检代办</h3>
+					<p class="aui-font-size-12 aui-margin-b-5">您预约，我办理</p>
+					<img src="img/hot-2.png">
+				</div>
+			</div>
+		</div>
+		<div class="aui-content">
+			<div class="bar">
+				<div class="bar-title aui-row" onclick="toDuiba();">
+					<div class="aui-col-xs-4">
+						积分商城
+					</div>
+					<div class="aui-col-xs-8 aui-text-right">
+						<span class="aui-text-danger">办业务，送积分，办多少送多少</span> <i class="aui-iconfont aui-icon-right"></i>
+					</div>
+				</div>
+			</div>
+			<div class="aui-hr"></div>
+			<!--<ul class="aui-list aui-list-in">
+				<li class="aui-list-header"><span class="aui-pull-left">精选车品</span><span class="aui-pull-left"><i class="aui-iconfont aui-icon-right"></i></span></li>
+			</ul>-->
+			<div class="aui-flex-col aui-flex-center aui-border-tb aui-bg-white">
+				<div id="creidt-slide">
+					<div class="aui-slide-wrap">
+						<div class="aui-slide-node bg-dark">
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+								<h3>车载手机支架</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">680</span>积分</p>
+								<img src="img/shop-1.jpg" width="80%">
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+								<h3>车载充电器</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">580</span>积分</p>
+								<img src="img/shop-2.jpg" width="80%">
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10">
+								<h3>空气净化器</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">1380</span>积分</p>
+								<img src="img/shop-3.jpg" width="80%">
+							</div>
+						</div>
+						<div class="aui-slide-node bg-dark">
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r" style="flex-wrap: nowrap">
+								<h3>车载手机支架</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">680</span>积分</p>
+								<img src="img/shop-1.jpg" width="80%">
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+								<h3>车载充电器</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">580</span>积分</p>
+								<img src="img/shop-2.jpg" width="80%">
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10">
+								<h3>空气净化器</h3>
+								<p><span class="aui-text-danger aui-margin-r-5 aui-font-size-16">1380</span>积分</p>
+								<img src="img/shop-3.jpg" width="80%">
+							</div>
+						</div>
+					</div>
+					<div class="aui-slide-page-wrap">
+						<!--分页容器-->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="aui-content aui-margin-t-10">
+			<img src="img/bx-banner.png" style="margin: 0px auto;" width="95%" id="ad-qcbx" />
+		</div>
+		
+		<div class="aui-content">
+			<div class="bar">
+				<div class="bar-title aui-row">
+					<div class="aui-col-xs-6">
+						车主特惠
+					</div>
+					<div class="aui-col-xs-6 aui-text-right">
+						<span class="aui-text-primary">尽享本地车品优惠</span> <i class="aui-iconfont aui-icon-right"></i>
+					</div>
+				</div>
+			</div>
+			<ul class="aui-list aui-media-list">
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="img/goods-demo.jpg">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title">中邦汽车钥匙扣</div>
+							</div>
+							<div class="aui-list-item-text">
+								jobon中邦汽车钥匙扣男士腰挂简约钥匙链挂件金属钥匙圈创意礼品
+							</div>
+							<div class="aui-info aui-margin-t-5" style="padding:0">
+								<div class="aui-info-item">
+									<h2 class="aui-text-danger">¥29.90</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-media-list-item-inner">
+						<div class="aui-list-item-media">
+							<img src="img/goods-demo.jpg">
+						</div>
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-text">
+								<div class="aui-list-item-title">中邦汽车钥匙扣</div>
+							</div>
+							<div class="aui-list-item-text">
+								jobon中邦汽车钥匙扣男士腰挂简约钥匙链挂件金属钥匙圈创意礼品
+							</div>
+							<div class="aui-info aui-margin-t-5" style="padding:0">
+								<div class="aui-info-item">
+									<h2 class="aui-text-danger">¥29.90</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+
+		</div>
+		<div class="aui-content">
+			<div class="bar">
+				<div class="bar-title aui-row">
+					<div class="aui-col-xs-6">
+						阿克苏车友会
+					</div>
+					<div class="aui-col-xs-6 aui-text-right">
+						<span class="aui-text-primary">同城车友，互动交流</span> <i class="aui-iconfont aui-icon-right"></i>
+					</div>
+				</div>
+			</div>
+			<div class="aui-hr"></div>
+			<section class="aui-grid">
+				<div class="aui-row">
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">日产车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+					<div class="aui-col-xs-3">
+						<img src="img/cyh-dz.jpg" width="80%" style="margin: 0px auto;" />
+						<div class="aui-grid-label">大众车友会</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<div class="aui-content">
+			<div class="bar" onclick="toNewsList();">
+				<div class="bar-title aui-row">
+					<div class="aui-col-xs-6">
+						阿克苏车讯头条
+					</div>
+					<div class="aui-col-xs-6 aui-text-right">
+						<i class="aui-iconfont aui-icon-right"></i>
+					</div>
+				</div>
+			</div>
+			<ul class="aui-list aui-media-list" id="news">
+				<template v-for="item in result">
+					<li class="aui-list-item" :id="item.Id" @click="show(item.Id)">
+						<div class="aui-media-list-item-inner">
+							<div class="aui-list-item-media">
+								<img :src="item.img">
+							</div>
+							<div class="aui-list-item-inner">
+								<div class="aui-list-item-text">
+									<div class="aui-list-item-title">{{item.title}}</div>
+								</div>
+								<div class="aui-info aui-margin-t-5" style="padding:0">
+									<div class="aui-info-item">{{item.create_time}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				</template>
+			</ul>
+
+		</div>
+		<script src="js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/aui-slide.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var userinfo = localStorage.getItem("userinfo");
+			var webview_wzdj, webview_njdb, webview_qcbx, webview_article, webview_news_list;
+			var oil = new Vue({
+				el: "#oil",
+				data: {
+					result: {
+						o1: '--',
+						o2: '--',
+						o3: '--'
+					}
+				}
+			})
+			var news = new Vue({
+				el: "#news",
+				data: {
+					result: []
+				},
+				methods: {
+					show: function(id) {
+						mui.fire(webview_article, 'articleId', {
+							articleId: id
+						});
+						showWebview(webview_article);
+					}
+				}
+			})
+			mui.plusReady(function() {
+				getOil();
+				webview_wzdj = {
+					url: '/violation/violation-pay.html',
+					id: 'violation-pay.html'
+				};
+				webview_njdb = {
+					url: '/check/check-pay.html',
+					id: 'check-pay.html'
+				};
+				webview_qcbx = mui.preload({
+					url: 'bx-show.html',
+					id: 'bx-show.html'
+				});
+				webview_wydk = mui.preload({
+					url: '/credit/credit.html',
+					id: 'credit.html'
+				});
+				webview_article = mui.preload({
+					url: 'article.html',
+					id: 'article.html'
+				});
+				webview_news_list = mui.preload({
+					url: 'news-list.html',
+					id: 'news-list.html'
+				});
+				document.getElementById('wzdj').addEventListener('tap', function() {
+					mui.openWindow(webview_wzdj);
+				})
+				document.getElementById('njdb').addEventListener('tap', function() {
+					mui.openWindow(webview_njdb);
+				})
+				document.getElementById('qcbx').addEventListener('tap', function() {
+					mui.openWindow(webview_qcbx);
+				})
+				document.getElementById('ad-njdb').addEventListener('tap', function() {
+					mui.openWindow(webview_njdb);
+				})
+				document.getElementById('ad-qcbx').addEventListener('tap', function() {
+					mui.openWindow(webview_qcbx);
+				})
+				document.getElementById('ad-wzdj').addEventListener('tap', function() {
+					mui.openWindow(webview_wzdj);
+				})
+			})
+			var slide = new auiSlide({
+				container: document.getElementById("banner-slide"),
+				// "width":300,
+				"height": 180,
+				"speed": 500,
+				"autoPlay": 3000, //自动播放
+				"loop": true,
+				"pageShow": true,
+				"pageStyle": 'dot',
+				'dotPosition': 'center'
+			})
+
+			var credit_slide = new auiSlide({
+				container: document.getElementById("creidt-slide"),
+				"width": 900,
+				"height": 180,
+				"speed": 500,
+				"autoPlay": 5000, //自动播放
+				"loop": true,
+				"pageShow": true,
+				"pageStyle": 'dot',
+				'dotPosition': 'center'
+			})
+
+			mui.getJSON(domain + "Api/Article/GetArticleList", {
+				pageIndex: 1,
+				pageSize: 8
+			}, function(data) {
+				news.result = data.result;
+			})
+
+			function toDuiba() {
+				var wv;
+				if(userinfo == null) {
+					wv = plus.webview.getWebviewById("login.html");
+					showWebview(wv);
+				} else {
+					mui.openWindow({
+						url: 'duiba-show.html',
+						id: 'duiba-show.html'
+					});
+				}
+			}
+
+			function toDuibaSign() {
+				var wv;
+				if(userinfo == null) {
+					wv = plus.webview.getWebviewById("login.html");
+					showWebview(wv);
+				} else {
+					mui.openWindow({
+						url: 'duiba-sign.html',
+						id: 'duiba-sign.html'
+					});
+				}
+			}
+
+			function toNewsList() {
+				wv = plus.webview.getWebviewById("news-list.html");
+				showWebview(wv);
+			}
+
+			function getOil() {
+				mui.getJSON("http://apis.juhe.cn/cnoil/oil_city", {
+					key: "3f74e4132f1a425abf5f4ce742a28ce2"
+				}, function(data) {
+					if(data.resultcode == 200) {
+						$.each(data.result, function(k, v) {
+							if(v.city == "新疆") {
+								oil.result["o1"] = v.b93;
+								oil.result["o2"] = v.b97;
+								oil.result["o3"] = v.b0;
+								return;
+							}
+						});
+					} else {
+						plus.nativeUI.toast("今日油价数据异常")
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

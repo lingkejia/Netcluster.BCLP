@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="css/percircle.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<div class="aui-title">车管家</div>
+		</header>
+		<div class="aui-content-padded">
+			<div id="notice-list">
+				<div v-for="item in result">
+					<div class="aui-card-list">
+						<div class="aui-card-list-header aui-border-b">
+							<h2 class="aui-pull-left">{{item.hphm}}</h2>
+							<i class="aui-iconfont aui-icon-gear aui-pull-right" @click="show(item.vid);"></i>
+						</div>
+						<div class="aui-card-list-content-padded ">
+							<section class="aui-grid">
+								<div class="aui-row">
+									<div class="aui-col-xs-6">
+										<div :id="'zc-'+item.vid" class="small green" url="1111" style="float: none;margin: 0px auto;">
+										</div>
+										<p class="aui-grid-label">年检到期</p>
+										<p class="aui-grid-label aui-font-size-12">下次日期：<span class="aui-text-success">{{item.zcrq}}</span></p>
+									</div>
+									<div class="aui-col-xs-6">
+										<div :id="'bx-'+item.vid" class="small" style="float: none;margin: 0px auto;">
+										</div>
+										<p class="aui-grid-label">保险到期</p>
+										<p class="aui-grid-label aui-font-size-12">下次日期：<span class="aui-text-success">{{item.bxrq}}</span></p>
+									</div>
+								</div>
+							</section>
+						</div>
+						<div class="aui-card-list-footer aui-border-t">
+							<h5>年检代办上门服务 <a onclick="openwin('check-pay.html')">立即办理</a></h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-margin-t-10 aui-bg-white ">
+			<div class="aui-flex-item-12 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15 " id="add">
+				<div class="aui-btn aui-btn-warning aui-btn-block"><i class="aui-iconfont aui-icon-plus"></i> 点击添加车辆设置提醒</div>
+			</div>
+		</div>
+		<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-margin-t-10 aui-bg-white " onclick="openwin( 'check-pay.html') ">
+			<div class="aui-flex-item-8 aui-flex-row aui-flex-middle aui-padded-15 ">
+				<h3>车辆年检代办</h3>
+				<p>在线预约，快速审车</p>
+			</div>
+			<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15 ">
+				<img src="img/hot-2.png " />
+			</div>
+		</div>
+		<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-bg-white " onclick="openwin( 'bx-show.html') ">
+			<div class="aui-flex-item-8 aui-flex-row aui-flex-middle aui-padded-15 ">
+				<h3>车险低至2.3折</h3>
+				<p>货比三家，尽享实惠</p>
+			</div>
+			<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15 ">
+				<img src="img/hot-3.png " />
+			</div>
+		</div>
+		<script src="js/mui.min.js " type="text/javascript " charset="utf-8 "></script>
+		<script src="js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/percircle.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript ">
+			mui.init();
+			var userinfo = localStorage.getItem("userinfo");
+			var uid;
+			var webview_notice;
+			var app = new Vue({
+				el: "#notice-list",
+				data: {
+					result: []
+				},
+				updated: function() {
+					$.each(this.result, function(k, v) {
+						var zcrq, bxrq;
+						if(v.zcts < 0) {
+							zcrq = 0;
+						} else if(v.zcts > 365) {
+							zcrq = 364;
+						} else {
+							zcrq = v.zcts;
+						}
+						if(v.bxts < 0) {
+							bxrq = 0;
+						} else if(v.bxts > 365) {
+							bxrq = 364;
+						} else {
+							bxrq = v.bxts;
+						}
+						$("#zc-" + v.vid).percircle({
+							text: v.zcts + "天",
+							percent: (365 - zcrq) / 365 * 100
+						})
+						$("#bx-" + v.vid).percircle({
+							text: v.bxts + "天",
+							percent: (365 - bxrq) / 365 * 100
+						})
+					})
+				},
+				methods: {
+					show: function(vid) {
+						mui.fire(webview_notice, 'vehcileId', {
+							id: vid
+						});
+						plus.webview.show(webview_notice, "slide-in-right");
+					}
+				}
+			})
+			mui.plusReady(function() {
+				webview_notice = mui.preload({
+					url: '/carinfo/car-notice.html',
+					id: 'car-notice.html'
+				});
+				document.getElementById('add').addEventListener('tap', function() {
+					var wv;
+					if(userinfo == null) {
+						wv = plus.webview.getWebviewById("login.html");
+
+					} else {
+						wv = mui.preload({
+							url: 'carinfo/car-list.html',
+							id: 'car-list.html'
+						});
+					}
+					showWebview(wv);
+				})
+				init();
+			})
+
+			function init() {
+				if(!mui.isEmptyObject(userinfo)) {
+					uid = JSON.parse(userinfo).Id
+					showWaiting();
+					mui.getJSON(domain + "API/Vehcile/GetAllNotice", {
+						uid: uid
+					}, function(ret) {
+						closeWaiting();
+						console.log(JSON.stringify(ret));
+						if(ret.code == 200) {
+							app.result = ret.result;
+						} else {
+							alert("数据异常");
+						}
+					})
+				}
+			}
+		</script>
+	</body>
+
+</html>

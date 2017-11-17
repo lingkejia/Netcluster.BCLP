@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">订单确认</div>
+		</header>
+		<div class="bar">
+			<div class="bar-title">
+				罚款代缴订单详情
+			</div>
+		</div>
+		<ul class="aui-list aui-form-list">
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						罚款金额
+					</div>
+					<div class="aui-list-item-input">
+						<label class="aui-pull-right">￥<span id="money"></span></label>
+					</div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						服务费
+					</div>
+					<div class="aui-list-item-input">
+						<label class="aui-pull-right">￥10</label>
+					</div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						罚单编号
+					</div>
+					<div class="aui-list-item-input">
+						<label class="aui-pull-right"><span id="order"></span></label>
+					</div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						支付金额
+					</div>
+					<div class="aui-list-item-input">
+						<label class="aui-pull-right aui-text-danger">￥<span id="total"></span></label>
+					</div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" id="btn-content">
+					<!--<div class="aui-btn aui-btn-primary aui-btn-block">下单支付</div>-->
+				</div>
+			</li>
+		</ul>
+
+		<p class="aui-margin-t-15 aui-text-center aui-font-size-12"><i class="aui-iconfont aui-icon-info"></i>提示：因在节假日或工作日19:30以后下单</p>
+		<p class="aui-text-center aui-font-size-12">所产生的滞纳金需用户承担</p>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/layer_mobile/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var pays = {};
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var money = self.money;
+				var order = self.order;
+				var total = parseInt(money) + 10;
+				document.getElementById("money").innerText = money;
+				document.getElementById("order").innerText = order;
+				document.getElementById("total").innerText = total;
+
+				plus.payment.getChannels(function(channels) {
+					var content = document.getElementById('btn-content');
+					for(var i in channels) {
+						var channel = channels[i];
+						if(channel.id == 'wxpay') { // 过滤掉不支持的支付通道：暂不支持360相关支付
+							pays[channel.id] = channel;
+							var de = document.createElement('div');
+							de.setAttribute('class', 'aui-btn aui-btn-primary aui-btn-block');
+							de.setAttribute('onclick', 'pay(this.id)');
+							de.id = channel.id;
+							de.innerText = channel.description + '支付';
+							content.appendChild(de);
+							checkServices(channel);
+						}
+					}
+				}, function(e) {
+					alert('获取支付通道失败：' + e.message);
+				});
+			})
+			// 检测是否安装支付服务
+			function checkServices(pc) {
+				if(!pc.serviceReady) {
+					var txt = null;
+					switch(pc.id) {
+						case 'alipay':
+							txt = '检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？';
+							break;
+						default:
+							txt = '系统未安装“' + pc.description + '”服务，无法完成支付，是否立即安装？';
+							break;
+					}
+					plus.nativeUI.confirm(txt, function(e) {
+						if(e.index == 0) {
+							pc.installService();
+						}
+					}, pc.description);
+				}
+			}
+
+		</script>
+	</body>
+
+</html>

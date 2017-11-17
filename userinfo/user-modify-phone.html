@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">修改手机号码</div>
+		</header>
+
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-mobile"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="phone" id="phone" placeholder="请输入新的手机号码">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-comment"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="code" id="code" placeholder="请输入短信验证码">
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-btn aui-btn-warning aui-pull-right" id="codeBtn">获取验证码</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="aui-flex-col aui-flex-center aui-padded-15">
+				<div class="aui-flex-item-12 aui-flex-row aui-padded-5">
+					<div class="aui-btn aui-btn-info aui-btn-block" id="regBtn">确定</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var seed = 60; //60秒  
+			var t1 = null;
+			var data = JSON.parse(localStorage.getItem("userinfo"));
+			mui.plusReady(function() {
+				document.getElementById('codeBtn').addEventListener('tap', function() {
+					if(seed != 60) {
+						plus.nativeUI.toast("验证码已发送，请稍后再试！");
+						return;
+					}
+					t1 = setInterval(tip, 1000);
+					mui.getJSON(domain + "API/Sms/Send", {
+						phone: $("#phone").val()
+					}, function(data) {
+						if(data == 200) {
+							plus.nativeUI.toast("验证码发送成功，请注意接收！");
+						} else {
+							plus.nativeUI.toast("验证码发送失败，请重试！");
+						}
+					})
+				})
+
+				document.getElementById('regBtn').addEventListener('tap', function() {
+					plus.nativeUI.showWaiting();
+					mui.getJSON(domain + "API/UserInfo/ModifyPhone", {
+						phone: $("#phone").val(),
+						uid: data.uid,
+						code: $("#code").val()
+					}, function(data) {
+						plus.nativeUI.closeWaiting();
+						if(data.code == 200) {
+							plus.nativeUI.toast("手机号码修改成功");
+							var ws = plus.webview.currentWebview();
+							plus.webview.close(ws);
+						} else {
+							plus.nativeUI.toast("修改失败：" + data.reason);
+						}
+					})
+				})
+			})
+
+			function enableBtn() {
+				$("#codeBtn").text("获取验证码");
+			}
+
+			function tip() {
+				seed--;
+				if(seed < 1) {
+					enableBtn();
+					seed = 60;
+					var t2 = clearInterval(t1);
+				} else {
+					$("#codeBtn").text(seed + "秒后重试");
+				}
+			}
+		</script>
+	</body>
+
+</html>

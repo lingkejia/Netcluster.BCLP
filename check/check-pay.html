@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">年检代办</div>
+		</header>
+
+		<div class="aui-content aui-margin-b-10">
+			<img src="../img/check-banner.png" class="aui-margin-b-10" />
+		</div>
+
+		<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-bg-white">
+			<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+				<img src="../img/check-1.png" width="30%">
+				<h3>车辆检测</h3>
+				<p class="aui-font-size-12 aui-margin-b-5">绿色通道，上门服务</p>
+			</div>
+			<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10">
+				<img src="../img/check-2.png" width="30%">
+				<h3>领免检标</h3>
+				<p class="aui-font-size-12 aui-margin-b-5">足不出户，专人代办</p>
+			</div>
+		</div>
+		<div class="aui-content aui-margin-t-10">
+			<ul class="aui-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-title">车辆检测流程（6年以上）</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner aui-padded-5">
+						<img src="../img/flow-1.png" />
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="aui-content aui-margin-t-10">
+			<ul class="aui-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-title">领免检标流程（6年以内）</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner aui-padded-5">
+						<img src="../img/flow-2.png" />
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="aui-content-padded aui-margin-t-15">
+			<div class="aui-btn aui-btn-primary aui-btn-block" id="pay">立即预约</div>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var webview_login, webview_pay_confirm;
+			var userinfo = localStorage.getItem("userinfo");
+			mui.plusReady(function() {
+				document.getElementById('pay').addEventListener('tap', function() {
+					if(userinfo == null) {
+						webview_login = mui.preload({
+							url: '/userinfo/login.html',
+							id: 'login.html'
+						})
+						showWebview(webview_login);
+					} else {
+						webview_pay_confirm = {
+							url: '/check/check-pay-confirm.html',
+							id: 'check-pay-confirm.html'
+						}
+						mui.openWindow(webview_pay_confirm);
+					}
+				})
+			})
+
+			function showImg() {
+				layer.open({
+					type: 1,
+					content: '<img src="img/notice.jpg" />',
+					anim: 'up'
+				});
+			}
+		</script>
+	</body>
+
+</html>

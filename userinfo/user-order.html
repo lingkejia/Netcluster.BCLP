@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">我的订单</div>
+		</header>
+		<div class="aui-tab" id="tab">
+			<div class="aui-tab-item aui-active">全部订单</div>
+			<div class="aui-tab-item">待处理</div>
+			<div class="aui-tab-item">进行中</div>
+			<div class="aui-tab-item">已完成</div>
+		</div>
+		<div id="content" class="aui-content">
+			<script id="order-template" type="text/html">
+				{{if result.length!=0}}
+				<ul class="aui-list aui-media-list">
+					{{each result value index}}
+					<li class="aui-list-item">
+						<div class="aui-media-list-item-inner">
+							<div class="aui-list-item-inner">
+								<div class="aui-list-item-text">
+									<div class="aui-list-item-title">{{value.pay_name}}</div>
+									<div class="aui-list-item-right">订单状态：<span class="aui-text-danger">{{value.pay_status==0?"未支付":"已支付"}}</span></div>
+								</div>
+								<div>
+									<p class="aui-font-size-12">下单时间：{{value.create_time}}</p>
+									<p class="aui-font-size-12">订单号码：{{value.order_id}}</p>
+									<p class="aui-font-size-12">支付金额：￥{{value.total_fee*0.01}}</p>
+								</div>
+							</div>
+						</div>
+					</li>
+					{{/each}}
+				</ul>
+				{{else}}
+				<img src="../img/blank-order.png" width="100%" /> {{/if}}
+			</script>
+		</div>
+		<script src="../js/mui.min.js " type="text/javascript " charset="utf-8 "></script>
+		<script src="../js/aui-tab.js " type="text/javascript " charset="utf-8 "></script>
+		<script src="../js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript ">
+			mui.init();
+			var uid = JSON.parse(localStorage.getItem("userinfo")).Id;
+			mui.plusReady(function() {
+				var tab = new auiTab({
+					element: document.getElementById("tab"),
+					repeatClick: false,
+					index: 1
+				}, function(ret) {
+					var i;
+					switch(ret.index) {
+						case 1:
+							i = 99;
+							break;
+						case 2:
+							i = 1;
+							break;
+						case 3:
+							i = 3;
+							break;
+						case 4:
+							i = 5;
+							break;
+						default:
+							break;
+					}
+					getOrder(i)
+				});
+				getOrder(99);
+			})
+
+			function getOrder(index) {
+				showWaiting();
+				mui.getJSON(domain + "API/Order/GetOrder", {
+					status: index,
+					uid: uid
+				}, function(ret) {
+					closeWaiting();
+					console.log(JSON.stringify(ret))
+					if(ret.code == 200) {
+						var html = template('order-template', ret);
+						document.getElementById("content").innerHTML = html;
+
+					} else {
+						plus.nativeUI.toast("数据异常");
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

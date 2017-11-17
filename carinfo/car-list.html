@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">我的车库</div>
+		</header>
+
+		<div class="aui-content">
+			<div id="content">
+				<template v-for="item in result">
+					<div class="aui-info aui-margin-t-10 aui-padded-l-10 aui-padded-r-10 aui-bg-white" @click="edit(item.Id)">
+						<div class="aui-info-item">
+							<img src="../img/car-icon.jpg" style="width:3rem" class="aui-img-round" /><span class="aui-margin-l-5">{{item.hphm}}</span>
+						</div>
+						<div class="aui-info-item"><i class="aui-iconfont aui-icon-edit"></i> 编辑</div>
+					</div>
+				</template>
+			</div>
+			<div class="aui-flex-col aui-flex-center aui-margin-t-10 aui-bg-white">
+				<div class="aui-flex-item-12 aui-flex-row aui-flex-middle aui-flex-center aui-padded-15" id="add_car">
+					<h3 class="aui-text-danger"><i class="aui-iconfont aui-icon-plus"></i> 新增车辆</h3>
+				</div>
+			</div>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var uid = JSON.parse(localStorage.getItem("userinfo")).Id;
+			var webview_carinfo;
+			var app = new Vue({
+				el: "#content",
+				data: {
+					result: []
+				},
+				methods: {
+					edit: function(id) {
+						var bts = [{
+								title: "编辑"
+							},
+							{
+								title: "删除",
+								style: "destructive"
+							}
+						];
+						plus.nativeUI.actionSheet({
+								title: "选择操作",
+								cancel: "取消",
+								buttons: bts
+							},
+							function(e) {
+								if(e.index == 2) {
+									if(confirm("确定删除车辆吗？")) {
+										mui.getJSON(domain + "API/Vehcile/DeleteVehcile", {
+											id: id
+										}, function(ret) {
+											if(ret.code == 200) {
+												plus.nativeUI.toast("删除成功");
+												var ws = plus.webview.currentWebview();
+												ws.reload();
+											} else {
+												plus.nativeUI.toast("数据异常");
+											}
+										})
+									}
+								} else if(e.index == 1) {
+									mui.fire(webview_carinfo, 'vehcileId', {
+										id: id
+									});
+									showWebview(webview_carinfo);
+								}
+							}
+						);
+					}
+				}
+			})
+			mui.plusReady(function() {
+				webview_carinfo = mui.preload({
+					url: 'carinfo.html',
+					id: 'carinfo.html'
+				});
+				showWaiting();
+				mui.getJSON(domain + "API/Vehcile/GetVehcileList", {
+					uid: uid
+				}, function(ret) {
+					closeWaiting();
+					if(ret.code == 200) {
+						app.result = ret.result;
+
+					} else {
+						plus.nativeUI.toast("数据异常");
+					}
+				})
+
+				document.getElementById('add_car').addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'carinfo.html',
+						id: 'add-carinfo.html'
+					});
+				})
+			})
+		</script>
+	</body>
+
+</html>

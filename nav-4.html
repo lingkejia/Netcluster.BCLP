@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<div class="aui-title">个人中心</div>
+		</header>
+		<!-- 顶部 -->
+		<div id="tpl_user_container">
+			<div id="tpl_user_content">
+				<section class="aui-content">
+					<template v-if="result.Id!=0">
+						<div class="aui-flex-col aui-flex-center aui-padded-15 aui-bg-info">
+							<div class="aui-flex-item-2 aui-flex-row aui-flex-middle">
+								<img :src="result.avatar" id="avatar" style="width:2rem" class="aui-img-round" v-if="result.nickname!=''">
+								<img src="img/avatar.png" style="width:2rem" class="aui-img-round" v-else />
+							</div>
+							<div class="aui-flex-item-6 aui-flex-row aui-flex-middle" @click="toUserCenter">
+								<p class="aui-text-white aui-font-size-18" v-if="result.nickname!=''">{{result.nickname}}</p>
+								<p class="aui-text-white"><i class="aui-iconfont aui-icon-mobile"></i><span>{{result.phone}}</span></p>
+								<p>
+									<div class="aui-label aui-label-warning" style="width: 100px;">
+										<span v-if="result.user_type=='0'">普通会员</span>
+										<span v-else>年卡会员</span>
+									</div>
+								</p>
+
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-right aui-flex-middle" onclick="alert('稍后开放')">
+								<div class="aui-btn aui-btn-primary">账户充值</div>
+							</div>
+						</div>
+					</template>
+					<template v-else>
+						<div class="aui-flex-col aui-flex-center aui-padded-15 aui-bg-info" onclick="toLogin();">
+							<div class="aui-flex-item-2 aui-flex-row aui-flex-middle">
+								<img src="img/avatar.png" style="width:2rem" class="aui-img-round" />
+							</div>
+							<div class="aui-flex-item-4 aui-flex-row aui-flex-middle">
+								<p class="aui-text-white aui-font-size-18">立即登录</p>
+							</div>
+							<div class="aui-flex-item-6 aui-flex-row aui-flex-middle">
+							</div>
+						</div>
+					</template>
+				</section>
+
+				<section class="aui-content aui-grid aui-margin-b-10">
+					<div class="aui-row">
+						<div class="aui-col-xs-6 aui-border-r">
+							<big class="aui-text-warning">
+											<span>{{result.money}}</span> 
+								<small> 元</small></big>
+							<div class="aui-gird-lable aui-font-size-12">余额</div>
+						</div>
+						<div class="aui-col-xs-6">
+							<big class="aui-text-success">
+											<span>{{result.credit}}</span> 
+								<small> 串</small></big>
+							<div class="aui-gird-lable aui-font-size-12">羊肉串</div>
+						</div>
+					</div>
+				</section>
+				<section class="aui-content">
+					<ul class="aui-list aui-list-in aui-margin-b-10">
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-cert aui-text-info"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow" @click="toOrder">
+								<div class="aui-list-item-title">我的订单</div>
+							</div>
+						</li>
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-cart aui-text-warning"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow" @click="toShop">
+								<div class="aui-list-item-title">百帮宝惠商城</div>
+								<div class="aui-list-item-right">会员积分免费兑换</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="aui-list aui-list-in aui-margin-b-10">
+						<li class="aui-list-item" @click="toCarlist">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-edit aui-text-danger"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow">
+								<div class="aui-list-item-title">我的车库</div>
+								<div class="aui-list-item-right">1辆车</div>
+							</div>
+						</li>
+					</ul>
+					<ul class="aui-list aui-list-in">
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-mail aui-text-primary"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow">
+								<div class="aui-list-item-title">系统消息</div>
+							</div>
+						</li>
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-share aui-text-primary"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow" onclick="shareShow();">
+								<div class="aui-list-item-title">推荐给好友</div>
+							</div>
+						</li>
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-phone aui-text-primary"></i>
+							</div>
+							<div class="aui-list-item-inner aui-list-item-arrow">
+								<div class="aui-list-item-title">联系我们</div>
+								<div class="aui-list-item-right">竭诚为您服务</div>
+							</div>
+						</li>
+						<li class="aui-list-item">
+							<div class="aui-list-item-label-icon">
+								<i class="aui-iconfont aui-icon-recovery aui-text-primary"></i>
+							</div>
+							<div class="aui-list-item-inner">
+								<div class="aui-list-item-title">检查更新</div>
+								<div class="aui-list-item-right">v1.0</div>
+							</div>
+						</li>
+					</ul>
+					<div class="aui-flex-col aui-flex-center aui-padded-15" v-if="result.Id!='0'">
+						<div class="aui-flex-item-12 aui-flex-row aui-padded-5">
+							<div class="aui-btn aui-btn-danger aui-btn-block" @click="toLogout">退出账户</div>
+						</div>
+					</div>
+					<p style="line-height: 60px;" class="aui-font-size-12 aui-text-center">Copyright © 2009-2017 网聚软体</p>
+				</section>
+			</div>
+		</div>
+		<script src="js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/template-web.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var shares = null;
+			var webview_login, webview_ucenter, webview_carlist, webview_order;
+			var data = localStorage.getItem("userinfo");
+			if(data == null) {
+				data = {
+					Id: 0,
+					money: 0,
+					credit: 0
+				};
+			} else {
+				data = JSON.parse(data);
+			}
+			mui.plusReady(function() {
+				webview_login = mui.preload({
+					url: 'userinfo/login.html',
+					id: 'login.html'
+				});
+				updateSerivces();
+			})
+
+			var app = new Vue({
+				el: "#tpl_user_content",
+				data: {
+					result: {}
+				},
+				methods: {
+					toOrder: function() {
+						if(this.result.Id == '0') {
+							toLogin();
+						} else {
+							webview_order = mui.preload({
+								url: 'userinfo/user-order.html',
+								id: 'user-order.html'
+							});
+							showWebview(webview_order);
+						}
+					},
+					toShop: function() {
+						if(this.result.Id == '0') {
+							toLogin();
+						} else {
+							mui.openWindow({
+								url: 'duiba-show.html',
+								id: 'duiba-show.html'
+							});
+						}
+					},
+					toCarlist: function() {
+						if(this.result.Id == '0') {
+							toLogin();
+						} else {
+							webview_carlist = mui.preload({
+								url: 'carinfo/car-list.html',
+								id: 'car-list.html'
+							});
+							showWebview(webview_carlist);
+						}
+					},
+					toUserCenter: function() {
+						webview_ucenter = mui.preload({
+							url: 'userinfo/user-center.html',
+							id: 'user-center.html'
+						});
+						showWebview(webview_ucenter);
+					},
+					toLogout: function() {
+						localStorage.removeItem("userinfo");
+						plus.webview.getLaunchWebview().reload()
+					}
+				}
+			})
+
+			app.result = data;
+
+			function toLogin() {
+				showWebview(webview_login);
+			}
+
+			function updateSerivces() {
+				plus.share.getServices(function(s) {
+					shares = {};
+					for(var i in s) {
+						var t = s[i];
+						shares[t.id] = t;
+					}
+				}, function(e) {
+					console.log('获取分享服务列表失败：' + e.message);
+				});
+			}
+			// 打开分享
+			function shareShow() {
+				var shareBts = [];
+				// 更新分享列表
+				var ss = shares['weixin'];
+				if(navigator.userAgent.indexOf('qihoo') < 0) { //在360流应用中微信不支持分享图片
+					ss && ss.nativeClient && (shareBts.push({
+							title: '微信朋友圈',
+							s: ss,
+							x: 'WXSceneTimeline'
+						}),
+						shareBts.push({
+							title: '微信好友',
+							s: ss,
+							x: 'WXSceneSession'
+						}));
+				}
+				ss = shares['sinaweibo'];
+				ss && shareBts.push({
+					title: '新浪微博',
+					s: ss
+				});
+				ss = shares['qq'];
+				ss && ss.nativeClient && shareBts.push({
+					title: 'QQ',
+					s: ss
+				});
+				// 弹出分享列表
+				shareBts.length > 0 ? plus.nativeUI.actionSheet({
+					title: '分享给好友',
+					cancel: '取消',
+					buttons: shareBts
+				}, function(e) {
+					(e.index > 0) && shareAction(shareBts[e.index - 1], false);
+				}) : plus.nativeUI.alert('当前环境无法支持分享操作!');
+			}
+
+			function shareAction(sb, bh) {
+				var temp = "/img/0.png";
+				var pic = plus.io.convertLocalFileSystemURL(temp);
+				var sharehref = {
+					value: "http://www.baidu.com",
+					title: "百帮宝车生活",
+					des: "我正在使用百帮宝车生活查询最准确的违章信息，你也来试试~"
+
+				}
+				console.log('分享操作：');
+				if(!sb || !sb.s) {
+					console.log('无效的分享服务！');
+					return;
+				}
+				var msg = {
+					content: "我正在使用百帮宝车生活查询最准确的违章信息，你也来试试~",
+					extra: {
+						scene: sb.x
+					}
+				};
+				msg.href = sharehref.value;
+				msg.title = sharehref.title;
+				msg.content = sharehref.des;
+				msg.thumbs = pic;
+				msg.pictures = pic;
+				// 发送分享
+				if(sb.s.authenticated) {
+					console.log('---已授权---');
+					shareMessage(msg, sb.s);
+				} else {
+					console.log('---未授权---');
+					sb.s.authorize(function() {
+						shareMessage(msg, sb.s);
+					}, function(e) {
+						console.log('认证授权失败：' + e.code + ' - ' + e.message);
+					});
+				}
+			}
+
+			function shareMessage(msg, s) {
+				console.log(JSON.stringify(msg));
+				s.send(msg, function() {
+					console.log('分享到"' + s.description + '"成功！');
+				}, function(e) {
+					console.log('分享到"' + s.description + '"失败: ' + JSON.stringify(e));
+				});
+			}
+		</script>
+	</body>
+
+</html>

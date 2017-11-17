@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">罚款代缴</div>
+		</header>
+
+		<div class="aui-content aui-margin-b-10">
+			<img src="../img/pay-banner.png" class="aui-margin-b-10" />
+		</div>
+		<div class="aui-flex-col aui-flex-center aui-border-tb aui-bg-white">
+			<div class="aui-flex-item-8 aui-flex-row aui-flex-middle aui-padded-10">
+				<h4>请先至交管部门处理好违章</h4>
+				<h6 class="aui-text-warning">凭处罚决定书编号缴费</h6>
+			</div>
+			<div class="aui-flex-item-4 aui-flex-row aui-flex-middle aui-padded-10">
+				<div class="aui-label aui-label-danger aui-padded-5" onclick="showNotice();">服务须知(必读)</div>
+			</div>
+		</div>
+		<ul class="aui-list aui-form-list">
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						处罚金额
+					</div>
+					<div class="aui-list-item-input">
+						<input type="number" id="money" name="money" placeholder="请输入金额">
+					</div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner">
+					<div class="aui-list-item-label">
+						罚单编号
+					</div>
+					<div class="aui-list-item-input aui-margin-l-10">
+						<input type="number" id="order" name="order" placeholder="内含“—”无需输入">
+					</div>
+					<div class="aui-margin-r-10" onclick="showImg();"><i class="aui-iconfont aui-icon-question aui-text-danger"></i></div>
+				</div>
+			</li>
+			<li class="aui-list-item">
+				<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+					<div class="aui-btn aui-btn-primary aui-btn-block" id="pay">去缴罚款</div>
+				</div>
+			</li>
+		</ul>
+
+		<p class="aui-margin-t-15 aui-text-center aui-font-size-12"><i class="aui-iconfont aui-icon-correct"></i>同意
+			<a href="#" onclick="showNotice();">《百帮宝车生活罚款代缴服务须知》</a>
+		</p>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/layer_mobile/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var webview_login, webview_pay_confirm;
+			var userinfo = localStorage.getItem("userinfo");
+			mui.plusReady(function() {
+				document.getElementById('pay').addEventListener('tap', function() {
+					if(userinfo == null) {
+						webview_login = mui.preload({
+							url: '/userinfo/login.html',
+							id: 'login.html'
+						})
+						showWebview(webview_login);
+					} else {
+						if (document.getElementById("money").value=="") {
+							alert("处罚金额不能为空");
+							return
+						}
+						if (document.getElementById("order").value=="") {
+							alert("罚单编号不能为空");
+							return
+						}
+						if (document.getElementById("order").value.length!=16) {
+							alert("罚单编号共16位，请检查！");
+							return
+						}
+						webview_pay_confirm = {
+							url: '/violation/violation-pay-confirm.html',
+							id: 'violation-pay-confirm.html',
+							extras: {
+								money: document.getElementById('money').value,
+								order: document.getElementById('order').value
+							}
+						}
+						mui.openWindow(webview_pay_confirm);
+					}
+				})
+			})
+
+			function showNotice() {
+				layer.open({
+					type: 1,
+					content: '<div class="aui-content-padded aui-text-center">\
+			<h3>车生活罚款代缴服务须知</h3>\
+			<div class="aui-text-left aui-margin-t-15">\
+				<p>1、1-2个工作日处理完毕，不能处理的订单会在1-2个工作日做退款处理</p>\
+				<p>2、处理后的违章请在15天内缴费，若超期每天将会产生3%的滞纳金</p>\
+				<p>3、成功处理的罚单不提供回执凭证，以实际下网为准</p>\
+				<p>4、因信息填写错误造成的损失，将由您自行承担</p>\
+				<p>5、提交过的处理编号不要再擅自去缴费，否则造成重复缴费将自行承担</p>\
+			</div>\
+		</div>',
+					anim: 'up',
+					style: 'position:fixed; bottom:0; left:0; width: 100%; height: 60%; padding-bottom:10px; border:none;'
+				});
+			}
+
+			function showImg() {
+				layer.open({
+					type: 1,
+					content: '<img src="../img/notice.jpg" />',
+					anim: 'up'
+				});
+			}
+		</script>
+	</body>
+
+</html>

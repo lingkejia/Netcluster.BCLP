@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+			.m-celltitle {
+				color: #aaaaaa;
+				margin-top: 5px;
+			}
+			
+			.line_m {
+				text-decoration: line-through;
+				color: #DDDDDD;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">登陆</div>
+		</header>
+
+		<div class="aui-content aui-bg-white">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-mobile"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" id="phone" name="phone" placeholder="请填写您的手机号码">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-lock"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="password" id="pwd" name="pwd" placeholder="请输入6-18位密码">
+						</div>
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-display" onclick="showPwd();"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="aui-flex-col aui-flex-center aui-padded-15">
+				<div class="aui-flex-item-6 aui-flex-row aui-padded-5">
+					<div class="aui-btn aui-btn-info aui-btn-block aui-btn-outlined" id="regBtn">手机免费注册</div>
+				</div>
+				<div class="aui-flex-item-6 aui-flex-row aui-padded-5">
+					<div class="aui-btn aui-btn-info aui-btn-block" id="loginBtn">登陆</div>
+				</div>
+			</div>
+		</div>
+		<div class="aui-content aui-bg-white">
+			<div class="m-celltitle aui-font-size-12 aui-text-center"><span class="line_m">　　　　　　　　　　　</span>　一键登录　<span class="line_m">　　　　　　　　　　　</span></div>
+			<div class="aui-flex-col aui-flex-center">
+				<div class="aui-flex-item-12 aui-flex-row aui-flex-center aui-padded-5">
+					<i class="aui-iconfont aui-icon-wechat" style="font-size: 2rem;color: #62b900;" onclick="login();"></i>
+				</div>
+			</div>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var webview_reg, webview_bind, webview_user;
+			var auths = {};
+
+			mui.plusReady(function() {
+
+				webview_reg = mui.preload({
+					url: 'reg.html',
+					id: 'reg.html'
+				});
+
+				document.getElementById('loginBtn').addEventListener('tap', function() {
+					showWaiting();
+					mui.getJSON(domain + "API/UserInfo/PhoneLogin", {
+						phone: $("#phone").val(),
+						pwd: $("#pwd").val()
+					}, function(data) {
+						closeWaiting();
+						if(data.code == 200) {
+							localStorage.setItem("userinfo", JSON.stringify(data.result));
+							plus.webview.getLaunchWebview().reload()
+							mui.back();
+							plus.nativeUI.toast("用户登陆成功");
+						} else {
+							plus.nativeUI.toast(data.reason);
+						}
+					})
+				})
+
+				document.getElementById('regBtn').addEventListener('tap', function() {
+					if(!webview_reg) {
+						webview_reg = plus.webview.getWebviewById('reg.html');
+					}
+					mui.openWindow({
+						id: 'reg.html'
+					});
+				})
+
+				plus.oauth.getServices(function(services) {
+					for(var i in services) {
+						var service = services[i];
+						console.log(service.id + ": " + service.description);
+						auths[service.id] = service;
+					}
+				}, function(e) {
+					plus.nativeUI.toast("无法使用一键登陆:" + e.message);
+				});
+			})
+
+			function showPwd() {
+				$("#pwd").attr("type", "text");
+			}
+
+			function login() {
+				var auth = auths["weixin"];
+				if(auth) {
+					if(plus.os.name == "Android") {
+						showWaiting();
+					}
+					auth.login(function() {
+						closeWaiting();
+						userinfo(auth);
+					}, function(e) {
+						closeWaiting();
+						plus.nativeUI.alert("登录认证失败" + e.message);
+					});
+				} else {
+					plus.nativeUI.alert("无效的登录认证通道！", null, "登录");
+				}
+			}
+
+			function userinfo(a) {
+				a.getUserInfo(function() {
+					var nickname = a.userInfo.nickname || a.userInfo.name || a.userInfo.miliaoNick;
+					showWaiting();
+					mui.getJSON(domain + "API/UserInfo/WeixinLogin", {
+						openid: a.userInfo.openid
+					}, function(data) {
+						closeWaiting();
+						if(data.code == 200) {
+							plus.nativeUI.toast("微信登陆成功");
+							localStorage.setItem("userinfo", JSON.stringify(data.result));
+							plus.webview.getLaunchWebview().reload()
+							mui.back();
+						} else {
+							mui.openWindow({
+								id: 'bind-phone.html',
+								url: 'bind-phone.html',
+								extras: {
+									openid: a.userInfo.openid,
+									nickname: nickname,
+									avatar: a.userInfo.headimgurl
+								}
+							});
+						}
+					})
+				}, function(e) {
+					plus.nativeUI.alert("获取用户信息失败！", null, "登录");
+				});
+			}
+		</script>
+	</body>
+
+</html>

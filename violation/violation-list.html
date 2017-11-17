@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">车辆违章</div>
+		</header>
+		<div id="vio">
+			<div class="aui-flex-col aui-flex-center aui-border-t aui-border-b aui-margin-b-5" style="background-color: #FFFFFF;">
+				<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10 aui-border-r">
+					<h1 class="aui-text-danger"><span id="total_money">{{money}}</span></h1>
+					<p>罚款</p>
+				</div>
+				<div class="aui-flex-item-6 aui-flex-row aui-flex-middle aui-flex-center aui-padded-10">
+					<h1 class="aui-text-danger"><span id="total_code">{{code}}</span></h1>
+					<p>积分</p>
+				</div>
+			</div>
+			<div id="vio_content">
+				<img src="../img/none-vio.jpg" width="100%" v-if="islist" />
+
+				<template v-for="item in result" v-else>
+					<div class="aui-content aui-margin-b-5">
+						<div class="bar">
+							<div class="bar-title">
+								{{item.wfsj}}
+							</div>
+						</div>
+						<ul class="aui-list aui-list-in">
+							<li class="aui-list-item">
+								<div class="aui-list-item-inner">
+									<div class="aui-label aui-label-primary aui-pull-left aui-margin-r-10">违法行为</div>
+									<h4 class="aui-pull-left">{{item.wfxw}}</h4>
+								</div>
+							</li>
+							<li class="aui-list-item">
+								<div class="aui-list-item-inner">
+									<div class="aui-label aui-label-primary aui-pull-left aui-margin-r-10">违法地点</div>
+									<h4 class="aui-pull-left">{{item.wfdd}}</h4>
+								</div>
+							</li>
+							<li class="aui-list-item">
+								<div class="aui-list-item-inner">
+									<div class="aui-label aui-label-danger aui-pull-left aui-margin-r-10">罚款金额</div>
+									<h4>{{item.wfje}}元</h4>
+									<div class="aui-label aui-label-danger aui-pull-left aui-margin-r-10">违法扣分</div>
+									<h4>{{item.wfjfs}}分</h4>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</template>
+
+			</div>
+			<div class="aui-content aui-margin-t-10">
+				<img src="../img/ad-1.png" />
+			</div>
+		</div>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var app = new Vue({
+				el: "#vio",
+				data: {
+					islist: true,
+					code: "0",
+					money: "0",
+					result: []
+				}
+			})
+			window.addEventListener('getWfxx', function(event) {
+				//获得事件参数
+				var vid = event.detail.vid;
+				var money = event.detail.money;
+				var code = event.detail.code;
+				app.code = code;
+				app.money = money;
+				showWaiting();
+				mui.getJSON(domain + "API/Violation/GetViolationInfo", {
+					vid: vid
+				}, function(data) {
+					closeWaiting();
+					if(data.code != 200) {
+						mui.alert("车辆信息有误，请在【我的】-【我的车库】中编辑后重新查询！");
+					} else {
+						if(!mui.isEmptyObject(data.result)) {
+							app.islist = false;
+							app.result = data.result;
+						} else {
+							app.islist=true;
+							app.result = [];
+						}
+					}
+
+				})
+			});
+		</script>
+	</body>
+
+</html>

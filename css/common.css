@@ -1,0 +1,14 @@
+.bar {
+	width: 100%;
+	margin-top: 10px;
+	background-color: #FFFFFF;
+	padding: 10px;
+}
+
+.bar-title {
+	font-size: 13px;
+	color: #333333;
+	border-left: 5px solid #2ba2ff;
+	padding-left: 10px;
+}
+

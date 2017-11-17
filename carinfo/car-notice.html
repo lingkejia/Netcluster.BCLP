@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">编辑信息</div>
+		</header>
+
+		<div class="aui-content aui-margin-b-15">
+			<div class="bar">
+				<div class="bar-title">
+					车辆提醒信息
+				</div>
+			</div>
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							上牌日期
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="zcrq" id="zcrq" placeholder="车辆首次注册日期" onclick="picZCRQ()">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							保险日期
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="bxrq" id="bxrq" placeholder="车辆保险到期日期" onclick="picBXRQ()">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							保险公司
+						</div>
+						<div class="aui-list-item-input">
+							<select name="bxgs" id="bxgs">
+								<option value="中国人保汽车保险">中国人保汽车保险 95518</option>
+								<option value="平安汽车保险">平安汽车保险 95512</option>
+								<option value="太平洋汽车保险">太平洋汽车保险 95500</option>
+								<option value="中华联合汽车保险">中华联合汽车保险 95585</option>
+								<option value="永安汽车保险">永安汽车保险 95505</option>
+								<option value="天安汽车保险">天安汽车保险 95505</option>
+								<option value="阳光汽车保险">阳光汽车保险 95510</option>
+								<option value="中国人寿财险">中国人寿财险 95519</option>
+								<option value="安邦汽车保险">安邦汽车保险 95569</option>
+								<option value="大地汽车保险">大地汽车保险 95590</option>
+								<option value="都邦汽车保险">都邦汽车保险 95512</option>
+							</select>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+						<div class="aui-btn aui-btn-primary aui-btn-block" onclick="saveNotice()">保存</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var vid;
+			window.addEventListener('vehcileId', function(event) {
+				//获得事件参数
+				vid = event.detail.id;
+				mui.getJSON(domain + "API/Vehcile/GetNotice", {
+					id: vid
+				}, function(ret) {
+					if(ret.code == 200) {
+						$("#zcrq").val(ret.result.zcrq);
+						$("#bxrq").val(ret.result.bxrq);
+						$("#bxgs").val(ret.result.bxgs);
+					} else {
+						plus.nativeUI.toast("数据异常");
+					}
+				})
+			});
+
+			function picZCRQ() {
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					$("#zcrq").val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
+				}, function(e) {
+					alert("请选择日期");
+				}, {
+					title: "请选择日期"
+				});
+			}
+
+			function picBXRQ() {
+				plus.nativeUI.pickDate(function(e) {
+					var d = e.date;
+					$("#bxrq").val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
+				}, function(e) {
+					alert("请选择日期");
+				}, {
+					title: "请选择日期"
+				});
+			}
+
+			function saveNotice() {
+				plus.nativeUI.showWaiting();
+				mui.getJSON(domain + "API/Vehcile/AddNotice", {
+					zcrq: $("#zcrq").val(),
+					bxrq: $("#bxrq").val(),
+					bxgs: $("#bxgs").val(),
+					vid: vid
+				}, function(data) {
+					plus.nativeUI.closeWaiting();
+					if(data.code == 200) {
+						plus.nativeUI.toast("车辆信息保存成功");
+					} else {
+						plus.nativeUI.toast(data.reason);
+					}
+					var carWebview = plus.webview.getWebviewById("nav-3.html");
+					carWebview.reload();
+					var ws = plus.webview.currentWebview();
+					plus.webview.close(ws);
+				})
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">车险比价</div>
+		</header>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var bxWebview = plus.webview.create("https://product.haibaobaoxian.com/index?pcode=baibbcsh-h5-all", "bx-url", {
+					top: "44px",
+					bottom: 0
+				});
+				self.append(bxWebview);
+				bxWebview.onloading = embedLoading;
+				bxWebview.onloaded = embedLoaded;
+				var old_back = mui.back;
+				mui.back = function() {
+					bxWebview.canBack(function(event) {
+						var canBack = event.canBack;
+						if(canBack) {
+							bxWebview.back();
+						} else {
+							old_back();
+						}
+					});
+				}
+
+			});
+
+			function embedLoading(e) {
+				showWaiting();
+			}
+
+			function embedLoaded(e) {
+				closeWaiting();
+			}
+
+		</script>
+	</body>
+
+</html>

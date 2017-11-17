@@ -1,0 +1,711 @@
+{
+	"main.html": {
+		"resources": [
+			"img/nav-r-2.png",
+			"img/avatar.png",
+			"img/nav-r-5.png",
+			"img/ad-1.png",
+			"img/nav-r-4.png",
+			"img/banner-1.png",
+			"img/nav-r-1.png",
+			"img/nav-r-3.png",
+			"img/banner-2.png",
+			"js/aui-slide.js",
+			"css/aui-slide.css",
+			"css/aui.css",
+			"css/aui-flex.css",
+			"img/ad-3.png",
+			"img/ad-2.png",
+			"img/banner-n-1.png",
+			"img/banner-n-2.png",
+			"img/hot-2.png",
+			"img/hot-1.png",
+			"img/bx-banner.png",
+			"img/price.png",
+			"js/mui.min.js",
+			"js/aui-toast.js",
+			"js/query.min.js",
+			"img/shop-1.jpg",
+			"img/shop-2.jpg",
+			"img/shop-3.jpg",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"bx-show.html",
+			"violation-pay.html",
+			"check-pay.html",
+			"article.html",
+			"credit.html"
+		]
+	},
+	"index.html": {
+		"resources": [
+			"main.html",
+			"js/mui.min.js",
+			"js/aui-tab.js",
+			"css/aui-iconfont.ttf",
+			"js/aui-slide.js",
+			"css/aui-slide.css",
+			"css/aui.css",
+			"nav-1.html"
+		],
+		"refer": [
+			"violation.html",
+			"main.html",
+			"violation-index.html",
+			"user-index.html",
+			"notify-index.html",
+			"nav-1.html",
+			"nav-3.html",
+			"nav-2.html",
+			"nav-4.html"
+		]
+	},
+	"violation.html": {
+		"resources": [
+			"img/avatar.png",
+			"img/ad-1.png",
+			"css/aui-slide.css"
+		],
+		"refer": []
+	},
+	"violation-index.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/car.png",
+			"js/mui.min.js",
+			"img/ad-1.png",
+			"img/hot-1.png",
+			"css/aui-pull-refresh.css",
+			"js/aui-pull-refresh.js",
+			"js/template-web.js",
+			"js/common.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"carinfo.html",
+			"violation-list.html",
+			"violation-pay.html"
+		]
+	},
+	"carinfo.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"js/common.js",
+			"js/query.min.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"violation-list.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/ad-1.png",
+			"js/aui-toast.js",
+			"js/common.js",
+			"js/template-web.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"user-index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"img/avatar.png",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/query.min.js",
+			"js/template-web.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"login.html",
+			"pay.html",
+			"user-order.html",
+			"user-center.html"
+		]
+	},
+	"notify-index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/hot-3.png",
+			"img/hot-2.png",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"carinfo.html",
+			"violation-pay-confirm.html",
+			"check-pay.html",
+			"bx-show.html",
+			"car-notice.html"
+		]
+	},
+	"login.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/query.min.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"reg.html",
+			"bind-phone.html"
+		]
+	},
+	"reg.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"js/common.js",
+			"js/query.min.js"
+		],
+		"refer": []
+	},
+	"pay.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/wechat.jpg"
+		],
+		"refer": []
+	},
+	"bx-show.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/aui-toast.js",
+			"css/aui-iconfont.ttf",
+			"js/common.js"
+		],
+		"refer": []
+	},
+	"user-order.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/aui-tab.js",
+			"js/aui-toast.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"violation-pay.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/pay-banner.png",
+			"js/aui-toast.js",
+			"img/price.png",
+			"js/layer/layer.js",
+			"js/layer/skin/default/layer.css",
+			"js/query.min.js",
+			"js/layer_mobile/layer.js",
+			"js/layer_mobile/need/layer.css",
+			"img/notice.jpg",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"violation-pay-notice.html",
+			"violation-pay-confirm.html"
+		]
+	},
+	"violation-pay-notice.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"violation-pay-confirm.html": {
+		"resources": [
+			"js/layer_mobile/layer.js",
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/layer_mobile/need/layer.css"
+		],
+		"refer": []
+	},
+	"check-pay.html": {
+		"resources": [
+			"js/layer_mobile/layer.js",
+			"img/pay-banner.png",
+			"js/mui.min.js",
+			"js/layer_mobile/need/layer.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/check-banner.png",
+			"img/check-1.png",
+			"img/check-2.png",
+			"img/flow-1.png",
+			"img/flow-2.png",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"check-pay-confirm.html"
+		]
+	},
+	"check-pay-confirm.html": {
+		"resources": [
+			"js/layer_mobile/layer.js",
+			"js/mui.min.js",
+			"js/layer_mobile/need/layer.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"article.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/aui-iconfont.ttf",
+			"js/common.js"
+		],
+		"refer": []
+	},
+	"credit.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/credit-banner.jpg",
+			"img/credit-nav.jpg",
+			"img/credit-ad.jpg"
+		],
+		"refer": []
+	},
+	"car-notice.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/query.min.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"bxgs-list.html"
+		]
+	},
+	"bxgs-list.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"user-center.html": {
+		"resources": [
+			"js/common.js",
+			"js/mui.min.js",
+			"js/query.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": [
+			"user-modify-phone.html"
+		]
+	},
+	"user-modify-phone.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"js/query.min.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"bind-phone.html": {
+		"resources": [
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js",
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"nav-1.html": {
+		"resources": [
+			"img/banner-n-1.png",
+			"img/hot-1.png",
+			"js/query.min.js",
+			"img/bx-banner.png",
+			"img/nav-r-3.png",
+			"css/aui-slide.css",
+			"img/hot-2.png",
+			"img/nav-r-2.png",
+			"js/aui-toast.js",
+			"img/shop-3.jpg",
+			"img/banner-n-2.png",
+			"img/shop-2.jpg",
+			"img/nav-r-4.png",
+			"img/shop-1.jpg",
+			"img/nav-r-1.png",
+			"js/aui-slide.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/slide-2.jpg",
+			"img/slide-1.jpg",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"img/hot-3.png",
+			"img/goods-demo.jpg",
+			"img/cyh-dz.jpg",
+			"img/cyh-rc.jpg",
+			"img/news-demo.jpg",
+			"css/common.css",
+			"js/template-web.js",
+			"js/common.js",
+			"js/vue.min.js",
+			"img/nav-r-5.png"
+		],
+		"refer": [
+			"violation-pay.html",
+			"check-pay.html",
+			"violation/violation-pay.html",
+			"check/check-pay.html",
+			"bx-show.html",
+			"credit.html",
+			"credit/credit.html",
+			"article.html",
+			"duiba-show.html",
+			"news-list.html",
+			"duiba-sign.html"
+		]
+	},
+	"nav-3.html": {
+		"resources": [
+			"img/hot-3.png",
+			"img/hot-2.png",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"css/percircle.css",
+			"js/percircle.js",
+			"js/query.min.js",
+			"js/aui-toast.js",
+			"js/template-web.js",
+			"js/vue.min.js"
+		],
+		"refer": [
+			"carinfo.html",
+			"bx-show.html",
+			"check-pay.html",
+			"car-notice.html",
+			"carinfo/car-notice.html",
+			"carinfo/car-list.html"
+		]
+	},
+	"nav-2.html": {
+		"resources": [
+			"css/aui-pull-refresh.css",
+			"js/common.js",
+			"img/hot-1.png",
+			"js/template-web.js",
+			"js/aui-pull-refresh.js",
+			"css/aui-flex.css",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"css/aui.css",
+			"img/car.png",
+			"img/kuai.png",
+			"img/sheng.png",
+			"img/zhun.png",
+			"js/aui-toast.js",
+			"js/vue.min.js",
+			"img/loading.png",
+			"img/load.png"
+		],
+		"refer": [
+			"violation-list.html",
+			"violation-pay.html",
+			"violation/violation-list.html",
+			"violation/violation-pay.html",
+			"carinfo/carinfo.html",
+			"carinfo/car-list.html"
+		]
+	},
+	"nav-4.html": {
+		"resources": [
+			"img/avatar.png",
+			"js/template-web.js",
+			"js/query.min.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/common.js",
+			"js/vue.min.js",
+			"img/0.png"
+		],
+		"refer": [
+			"login.html",
+			"user-order.html",
+			"userinfo/login.html",
+			"userinfo/user-center.html",
+			"userinfo/user-order.html",
+			"carinfo/car-list.html",
+			"duiba-show.html"
+		]
+	},
+	"violation/violation-pay.html": {
+		"resources": [
+			"js/layer_mobile/layer.js",
+			"js/layer_mobile/need/layer.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/pay-banner.png",
+			"js/mui.min.js",
+			"img/notice.jpg",
+			"css/aui-iconfont.ttf",
+			"js/common.js"
+		],
+		"refer": [
+			"violation/violation-pay-confirm.html",
+			"userinfo/login.html"
+		]
+	},
+	"violation/violation-pay-confirm.html": {
+		"resources": [
+			"js/layer_mobile/need/layer.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/common.css",
+			"js/layer_mobile/layer.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf"
+		],
+		"refer": []
+	},
+	"check/check-pay.html": {
+		"resources": [
+			"js/layer_mobile/layer.js",
+			"js/mui.min.js",
+			"js/layer_mobile/need/layer.css",
+			"css/aui-iconfont.ttf",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"img/check-2.png",
+			"img/check-banner.png",
+			"img/flow-2.png",
+			"img/flow-1.png",
+			"img/check-1.png",
+			"js/common.js"
+		],
+		"refer": [
+			"check/check-pay-confirm.html",
+			"userinfo/login.html"
+		]
+	},
+	"check/check-pay-confirm.html": {
+		"resources": [
+			"css/common.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/common.js"
+		],
+		"refer": []
+	},
+	"credit/credit.html": {
+		"resources": [
+			"img/credit-ad.jpg",
+			"img/credit-banner.jpg",
+			"img/credit-nav.jpg",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"violation/violation-list.html": {
+		"resources": [
+			"js/aui-toast.js",
+			"js/common.js",
+			"js/mui.min.js",
+			"img/ad-1.png",
+			"js/template-web.js",
+			"css/aui-iconfont.ttf",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/common.css",
+			"img/blank-order.png",
+			"img/none-vio.jpg"
+		],
+		"refer": []
+	},
+	"carinfo/carinfo.html": {
+		"resources": [
+			"js/query.min.js",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/common.css",
+			"js/vue.min.js"
+		],
+		"refer": []
+	},
+	"userinfo/reg.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js"
+		],
+		"refer": []
+	},
+	"userinfo/login.html": {
+		"resources": [
+			"js/common.js",
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": [
+			"userinfo/reg.html",
+			"userinfo/bind-phone.html"
+		]
+	},
+	"userinfo/bind-phone.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js"
+		],
+		"refer": [
+			"index.html"
+		]
+	},
+	"userinfo/user-center.html": {
+		"resources": [
+			"js/common.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js"
+		],
+		"refer": [
+			"userinfo/user-modify-phone.html"
+		]
+	},
+	"userinfo/user-modify-phone.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"userinfo/user-order.html": {
+		"resources": [
+			"js/aui-toast.js",
+			"js/aui-tab.js",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"js/template-web.js",
+			"css/aui-iconfont.ttf",
+			"js/common.js",
+			"img/blank-order.png"
+		],
+		"refer": []
+	},
+	"carinfo/car-list.html": {
+		"resources": [
+			"js/common.js",
+			"css/common.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js",
+			"img/car-icon.jpg",
+			"js/template-web.js",
+			"js/aui-toast.js",
+			"js/aui-dialog.js",
+			"js/vue.min.js"
+		],
+		"refer": [
+			"carinfo/carinfo.html"
+		]
+	},
+	"carinfo/car-notice.html": {
+		"resources": [
+			"css/common.css",
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf",
+			"js/query.min.js"
+		],
+		"refer": [
+			"carinfo/bxgs-list.html"
+		]
+	},
+	"carinfo/bxgs-list.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css"
+		],
+		"refer": []
+	},
+	"duiba-show.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/aui-toast.js",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf"
+		]
+	},
+	"news-list.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"css/common.css"
+		]
+	},
+	"duiba-sign.html": {
+		"resources": [
+			"css/aui-flex.css",
+			"css/aui.css",
+			"js/common.js",
+			"js/mui.min.js",
+			"css/aui-iconfont.ttf"
+		]
+	}
+}

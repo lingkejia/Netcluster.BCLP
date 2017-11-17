@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+			.m-celltitle {
+				color: #aaaaaa;
+				margin-top: 5px;
+			}
+			
+			.line_m {
+				text-decoration: line-through;
+				color: #DDDDDD;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">注册</div>
+		</header>
+
+		<div class="aui-content aui-bg-white">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-mobile"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" name="phone" id="phone" maxlength="11" placeholder="请输入您要注册的手机号码">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-comment"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="number" name="code" id="code" maxlength="6" placeholder="请输入短信验证码">
+						</div>
+						<div class="aui-list-item-input">
+							<div class="aui-btn aui-btn-warning aui-pull-right" id="codeBtn">获取验证码</div>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-lock"></i>
+						</div>
+						<div class="aui-list-item-input">
+							<input type="password" name="pwd" id="pwd" maxlength="18" placeholder="请设置账户密码6-18位密码">
+						</div>
+						<div class="aui-list-item-label-icon">
+							<i class="aui-iconfont aui-icon-display" onclick="showPwd();"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="aui-flex-col aui-flex-center aui-padded-15">
+				<div class="aui-flex-item-12 aui-flex-row aui-padded-5">
+					<div class="aui-btn aui-btn-info aui-btn-block" id="regBtn">完成</div>
+				</div>
+			</div>
+			<div class="aui-content-padded">
+				<p class="aui-font-size-12 aui-text-center">注册即代表您同意
+					<a href="#">《百帮宝车生活用户使用协议》</a>
+				</p>
+			</div>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var seed = 60; //60秒  
+			var t1 = null;
+			var webview_login;
+			mui.plusReady(function() {
+				document.getElementById('codeBtn').addEventListener('tap', function() {
+					if(checkField()) {
+						if(seed != 60) {
+							plus.nativeUI.toast("验证码已发送，请稍后再试！");
+							return;
+						}
+						t1 = setInterval(tip, 1000);
+						mui.get(domain + "API/Sms/Send", {
+							phone: $("#phone").val()
+						}, function(data) {
+							if(data == "success") {
+								plus.nativeUI.toast("验证码发送成功，请注意接收！");
+							} else {
+								plus.nativeUI.toast("验证码发送失败！" + data);
+							}
+						})
+					}
+
+				})
+
+				document.getElementById('regBtn').addEventListener('tap', function() {
+					if(checkField()) {
+						showWaiting();
+						mui.getJSON(domain + "API/UserInfo/AddUser", {
+							phone: $("#phone").val(),
+							pwd: $("#pwd").val(),
+							code: $("#code").val()
+						}, function(data) {
+							closeWaiting();
+							if(data.code == 200) {
+								plus.nativeUI.toast("用户注册成功");
+								if(!webview_login) {
+									webview_login = plus.webview.getWebviewById('login.html');
+								}
+								showWebview(webview_login);
+							} else {
+								plus.nativeUI.toast("注册失败：" + data.reason);
+							}
+						})
+					}
+
+				})
+			})
+
+			function showPwd() {
+				$("#pwd").attr("type", "text");
+			}
+
+			function checkField() {
+				if($("#phone").val().length != 11) {
+					plus.nativeUI.toast("手机号码不正确");
+					return false;
+				}
+				return true;
+			}
+
+			function enableBtn() {
+				$("#codeBtn").text("获取验证码");
+			}
+
+			function tip() {
+				seed--;
+				if(seed < 1) {
+					enableBtn();
+					seed = 60;
+					var t2 = clearInterval(t1);
+				} else {
+					$("#codeBtn").text(seed + "秒后重试");
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">个人信息</div>
+		</header>
+
+		<div class="aui-content aui-margin-b-15">
+			<ul class="aui-list aui-list-in">
+				<li class="aui-list-item" id="modifyPhone">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">手机账号</div>
+						<div class="aui-list-item-right" id="phone">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item" id="modifyWx">
+					<div class="aui-list-item-inner aui-list-item-arrow">
+						<div class="aui-list-item-title">微信账号</div>
+						<div class="aui-list-item-right" id="weixin">
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var webview_modify_phone;
+			var data;
+			var auths = {};
+			mui.plusReady(function() {
+				webview_modify_phone = mui.preload({
+					url: 'user-modify-phone.html',
+					id: 'user-modify-phone.html'
+				});
+
+				plus.oauth.getServices(function(services) {
+					for(var i in services) {
+						var service = services[i];
+						console.log(service.id + ": " + service.description);
+						auths[service.id] = service;
+					}
+				}, function(e) {
+					plus.nativeUI.toast("无法使用一键登陆:" + e.message);
+				});
+
+				data = JSON.parse(localStorage.getItem("userinfo"));
+				$("#phone").text(data.phone);
+				if(data.nickname === null) {
+					$("#weixin").text("立刻绑定");
+				} else {
+					$("#weixin").text(data.nickname);
+				}
+
+				document.getElementById('modifyPhone').addEventListener('tap', function() {
+					if(!webview_modify_phone) {
+						webview_modify_phone = plus.webview.getWebviewById('user-modify-phone.html');
+					}
+					mui.openWindow({
+						id: 'user-modify-phone.html'
+					});
+				})
+
+				document.getElementById('modifyWx').addEventListener('tap', function() {
+					plus.nativeUI.showWaiting();
+					var auth = auths["weixin"];
+					if(auth) {
+						var w = null;
+						if(plus.os.name == "Android") {
+							w = plus.nativeUI.showWaiting();
+						}
+						auth.login(function() {
+							w && w.close();
+							w = null;
+							userinfo(auth);
+						}, function(e) {
+							w && w.close();
+							w = null;
+							plus.nativeUI.alert("登录认证失败" + e.message);
+						});
+					} else {
+						plus.nativeUI.alert("无效的登录认证通道！", null, "登录");
+					}
+				})
+			})
+
+			function userinfo(a) {
+				a.getUserInfo(function() {
+					var nickname = a.userInfo.nickname || a.userInfo.name || a.userInfo.miliaoNick;
+					plus.nativeUI.showWaiting();
+					mui.getJSON(domain + "API/UserInfo/WeixinBind", {
+						openid: a.userInfo.openid,
+						nickname: nickname,
+						avatar: a.userInfo.avatar,
+						phone: data.phone
+					}, function(result) {
+						plus.nativeUI.closeWaiting();
+						if(result.code == 200) {
+							plus.nativeUI.toast("微信绑定成功");
+							localStorage.setItem("userinfo", JSON.stringify(result.result));
+							var userWebview = plus.webview.getWebviewById("user-index.html");
+							userWebview.reload();
+							mui.back();
+						} else {
+							plus.nativeUI.toast("微信绑定失败：" + result.reason);
+						}
+					})
+				}, function(e) {
+					plus.nativeUI.alert("获取用户信息失败！", null, "登录");
+				});
+			}
+		</script>
+	</body>
+
+</html>

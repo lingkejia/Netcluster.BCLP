@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>百帮宝车生活</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="aui-bar aui-bar-nav">
+			<a class="mui-action-back aui-pull-left aui-btn">
+				<span class="aui-iconfont aui-icon-left"></span>
+			</a>
+			<div class="aui-title">添加车辆</div>
+		</header>
+
+		<div class="aui-tips aui-bg-primary aui-margin-b-15" id="tips-1">
+			<i class="aui-iconfont aui-icon-info"></i>
+			<div class="aui-tips-title">请对照《机动车行驶证》认真填写以下信息</div>
+			<i class="aui-iconfont aui-icon-close"></i>
+		</div>
+
+		<div class="aui-content aui-margin-b-15">
+			<div class="bar">
+				<div class="bar-title">
+					车辆基本信息
+				</div>
+			</div>
+			<ul class="aui-list aui-form-list" id="content">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							车辆类型
+						</div>
+						<div class="aui-list-item-input">
+							<label><input class="aui-radio" type="radio" name="hpzl" id="hpzl" v-model="form.hpzl" value="02" checked> 小型汽车</label>
+							<label><input class="aui-radio" type="radio" name="hpzl" id="hpzl" v-model="form.hpzl" value="01"> 大型汽车</label>
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							车牌号码
+						</div>
+						<div class="aui-list-item-input">
+							<input type="hidden" name="id" v-model="form.id" id="id" value="0">
+							<input type="text" name="hphm" id="hphm" v-model="form.hphm" placeholder="完整车牌号码">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							发动机号
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="fdjh" id="fdjh" v-model="form.fdjh" placeholder="发动机号后6位">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label">
+							车架号码
+						</div>
+						<div class="aui-list-item-input">
+							<input type="text" name="clsbdh" id="clsbdh" v-model="form.clsbdh" placeholder="车辆识别代码后6位">
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+						<div class="aui-btn aui-btn-primary aui-btn-block" @click="saveVehcile"><span class="aui-iconfont aui-icon-edit"></span>保存车辆信息</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="../js/query.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var uid = JSON.parse(localStorage.getItem("userinfo")).Id;
+			var status = "add";
+			var app = new Vue({
+				el: "#content",
+				data: {
+					form: {
+						id: 0,
+						hpzl: "02",
+						hphm: "",
+						fdjh: "",
+						clsbdh: "",
+						uid: uid
+					}
+				},
+				watch: {
+					"form.hphm": function(newHphm) {
+						this.form.hphm = newHphm.toUpperCase();
+					},
+					"form.fdjh": function(newFdjh) {
+						this.form.fdjh = newFdjh.toUpperCase();
+					},
+					"form.clsbdh": function(newClsbdh) {
+						this.form.clsbdh = newClsbdh.toUpperCase();
+					},
+				},
+				methods: {
+					saveVehcile: function() {
+						if(this.form.fdjh == "") {
+							plus.nativeUI.toast("请填写发动机号后6位");
+							return;
+						}
+						if(this.form.clsbdh == "") {
+							plus.nativeUI.toast("请填写车辆识别代码后6位");
+							return;
+						}
+						showWaiting();
+						var url;
+						if(status == "add") {
+							url = domain + "API/Vehcile/AddVehcile";
+						} else {
+							url = domain + "API/Vehcile/EditVehcile";
+						}
+						mui.getJSON(url, this.form, function(data) {
+							closeWaiting();
+							if(data.code == 200) {
+								plus.nativeUI.toast("车辆信息保存成功");
+							} else {
+								plus.nativeUI.toast(data.reason);
+							}
+							var carWebview = plus.webview.getWebviewById("car-list.html");
+							carWebview.reload();
+							var ws = plus.webview.currentWebview();
+							plus.webview.close(ws);
+						})
+					}
+				}
+			})
+			//添加newId自定义事件监听
+			window.addEventListener('vehcileId', function(event) {
+				//获得事件参数
+				var id = event.detail.id;
+				showWaiting();
+				mui.getJSON(domain + "API/Vehcile/GetVehcile", {
+					id: id
+				}, function(ret) {
+					closeWaiting();
+					if(ret.code == 200) {
+						app.form = ret.result;
+						status = "edit";
+					} else {
+						plus.nativeUI.toast("数据异常");
+					}
+				})
+			});
+
+			function saveVehcile() {
+
+			}
+		</script>
+	</body>
+
+</html>
